@@ -1,5 +1,8 @@
 package cinema.adoro.com.adorocinema.domain;
 
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -7,23 +10,36 @@ import java.util.Date;
  * Created by clertonleal on 13/09/14.
  * Adoro Cinema
  */
+@DatabaseTable
 public class Movie implements Serializable{
 
+    @DatabaseField(id = true)
+    private Integer id;
+
+    @DatabaseField
     private String title;
 
+    @DatabaseField
     private String synopsis;
 
+    @DatabaseField
     private Integer minimumAge;
 
+    @DatabaseField
     private Date launchDate;
 
+    @DatabaseField
     private String coverUrl;
 
+    @DatabaseField
     private Integer durationInMinutes;
 
+    @DatabaseField
     private String director;
 
+    @DatabaseField
     private String gender;
+
 
     public String getTitle() {
         return title;
@@ -87,5 +103,13 @@ public class Movie implements Serializable{
 
     public void setGender(String gender) {
         this.gender = gender;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 }

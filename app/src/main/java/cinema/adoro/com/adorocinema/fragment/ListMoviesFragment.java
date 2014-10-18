@@ -1,6 +1,5 @@
 package cinema.adoro.com.adorocinema.fragment;
 
-import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,6 +11,7 @@ import android.widget.ListView;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.InjectView;
 import cinema.adoro.com.adorocinema.R;
 import cinema.adoro.com.adorocinema.activity.MovieDetailActivity;
 import cinema.adoro.com.adorocinema.adapter.MovieAdapter;
@@ -22,11 +22,13 @@ import cinema.adoro.com.adorocinema.util.BundleHelper;
  * Created by clertonleal on 13/09/14.
  * Adoro Cinema
  */
-public class ListMoviesFragment extends Fragment {
+public class ListMoviesFragment extends GenericFragment {
 
     private List<Movie> movies = new ArrayList<Movie>();
     private MovieAdapter movieAdapter;
-    private ListView listMovies;
+
+    @InjectView(R.id.list_movies)
+    ListView listMovies;
 
     public void setListMovies(List<Movie> movies){
         this.movies.clear();
@@ -42,7 +44,7 @@ public class ListMoviesFragment extends Fragment {
     }
 
     private void prepareViews(View rootView) {
-        listMovies = (ListView) rootView.findViewById(R.id.list_movies);
+        injectViews(rootView);
         listMovies.setAdapter(movieAdapter);
         listMovies.setOnItemClickListener(movieSelectedListener);
     }

@@ -1,12 +1,12 @@
 package cinema.adoro.com.adorocinema.activity;
 
-import android.app.Activity;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import butterknife.InjectView;
 import cinema.adoro.com.adorocinema.R;
 import cinema.adoro.com.adorocinema.domain.Movie;
 import cinema.adoro.com.adorocinema.util.BundleHelper;
@@ -16,16 +16,29 @@ import cinema.adoro.com.adorocinema.util.TextMerging;
  * Created by clertonleal on 13/09/14.
  * Adoro Cinema
  */
-public class MovieDetailActivity extends Activity {
+public class MovieDetailActivity extends GenericActivity {
+
+    @InjectView(R.id.image_detail_movie)
+    ImageView cover;
+
+    @InjectView(R.id.text_synopsis)
+    TextView synopsis;
+
+    @InjectView(R.id.text_detail_title)
+    TextView title;
 
     private Movie movie;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_movie_detail);
         getMovieFromIntent();
         fillScreen();
+    }
+
+    @Override
+    protected void setContentView() {
+        setContentView(R.layout.activity_movie_detail);
     }
 
     private void getMovieFromIntent() {
@@ -33,12 +46,8 @@ public class MovieDetailActivity extends Activity {
     }
 
     private void fillScreen() {
-        final ImageView cover = (ImageView) findViewById(R.id.image_detail_movie);
-        final TextView synopsis = (TextView) findViewById(R.id.text_synopsis);
-        final TextView title = (TextView) findViewById(R.id.text_detail_title);
         title.setText(movie.getTitle());
         setSynopsis(synopsis);
-
     }
 
     private void setSynopsis(TextView synopsis) {
@@ -49,5 +58,4 @@ public class MovieDetailActivity extends Activity {
         spannableString.setSpan(new TextMerging(15, margin), 0, 0, 0);
         synopsis.setText(spannableString);
     }
-
 }
