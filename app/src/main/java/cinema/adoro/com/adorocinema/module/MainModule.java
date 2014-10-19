@@ -11,8 +11,10 @@ import cinema.adoro.com.adorocinema.activity.MoviesActivity;
 import cinema.adoro.com.adorocinema.application.ApplicationContext;
 import cinema.adoro.com.adorocinema.database.DatabaseHelper;
 import cinema.adoro.com.adorocinema.fragment.ListMoviesFragment;
+import cinema.adoro.com.adorocinema.network.MovieNetwork;
 import dagger.Module;
 import dagger.Provides;
+import retrofit.RestAdapter;
 
 /**
  * Created by clertonleal on 16/10/14.
@@ -51,6 +53,17 @@ public class MainModule {
     @Singleton
     DatabaseHelper provideDatabaseHelper(Context context){
         return new DatabaseHelper(context);
+    }
+
+    @Provides
+    @Singleton
+    RestAdapter provideRestAdapter(){
+        return new RestAdapter.Builder().setEndpoint("http://192.168.25.12:3000").build();
+    }
+
+    @Provides
+    MovieNetwork provideMovieNetwork(RestAdapter restAdapter){
+        return restAdapter.create(MovieNetwork.class);
     }
 
 }

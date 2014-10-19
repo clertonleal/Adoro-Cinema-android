@@ -46,16 +46,11 @@ public class ListMoviesFragment extends GenericFragment {
     private void prepareViews(View rootView) {
         injectViews(rootView);
         listMovies.setAdapter(movieAdapter);
-        listMovies.setOnItemClickListener(movieSelectedListener);
-    }
-
-    private final AdapterView.OnItemClickListener movieSelectedListener = new AdapterView.OnItemClickListener() {
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        listMovies.setOnItemClickListener(
+                (parent, view, position, id) -> {
             final Intent intent = new Intent(getActivity(), MovieDetailActivity.class);
             intent.putExtra(BundleHelper.MOVIE, movies.get(position));
             startActivity(intent);
-        }
-    };
-
+        });
+    }
 }

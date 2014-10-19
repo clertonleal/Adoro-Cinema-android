@@ -1,10 +1,14 @@
 package cinema.adoro.com.adorocinema.service;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import cinema.adoro.com.adorocinema.dao.GenericDao;
 import cinema.adoro.com.adorocinema.dao.MovieDao;
 import cinema.adoro.com.adorocinema.domain.Movie;
+import cinema.adoro.com.adorocinema.network.MovieNetwork;
+import retrofit.Callback;
 
 /**
  * Created by clertonleal on 18/10/14.
@@ -15,8 +19,15 @@ public class MovieService extends GenericService<Movie> {
     @Inject
     MovieDao movieDao;
 
+    @Inject
+    MovieNetwork movieNetwork;
+
     @Override
     protected GenericDao<Movie> getDao() {
         return movieDao;
+    }
+
+    public void retrieveMovies(Callback<List<Movie>> movies){
+        movieNetwork.allMovies(movies);
     }
 }
