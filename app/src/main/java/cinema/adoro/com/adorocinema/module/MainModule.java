@@ -12,6 +12,7 @@ import cinema.adoro.com.adorocinema.application.ApplicationContext;
 import cinema.adoro.com.adorocinema.database.DatabaseHelper;
 import cinema.adoro.com.adorocinema.fragment.ListMoviesFragment;
 import cinema.adoro.com.adorocinema.network.MovieNetwork;
+import cinema.adoro.com.adorocinema.util.UrlServer;
 import dagger.Module;
 import dagger.Provides;
 import retrofit.RestAdapter;
@@ -58,7 +59,7 @@ public class MainModule {
     @Provides
     @Singleton
     RestAdapter provideRestAdapter(){
-        return new RestAdapter.Builder().setEndpoint("http://192.168.25.12:3000").build();
+        return new RestAdapter.Builder().setEndpoint(UrlServer.SERVER_URL).build();
     }
 
     @Provides

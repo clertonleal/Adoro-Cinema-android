@@ -14,6 +14,8 @@ import cinema.adoro.com.adorocinema.service.MovieService;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 
 public class MoviesActivity extends GenericActivity {
@@ -26,23 +28,36 @@ public class MoviesActivity extends GenericActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (savedInstanceState == null) {
-            movieService.retrieveMovies(listCallback);
-        }
+        createListFragment();
+        compositeSubscription.add(movieService.retrieveMovies().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(
+                movies -> showMovies(movies),
+                e -> logError(e)
+        ));
     }
 
-    Callback<List<Movie>> listCallback = new Callback<List<Movie>>() {
-        @Override
-        public void success(List<Movie> movies, Response response) {
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        listMoviesFragment.showLoading();
+    }
+
+    private void createListFragment() {
+        getFragmentManager().beginTransaction().add(R.id.container, listMoviesFragment).commit();
+    }
+
+    private void logError(Throwable e) {
+        listMoviesFragment.showError();
+        log(new GenericException(e), "");
+    }
+
+    private void showMovies(List<Movie> movies) {
+        if(movies.isEmpty()){
+            listMoviesFragment.showEmpty();
+        } else {
             listMoviesFragment.setListMovies(movies);
-            getFragmentManager().beginTransaction().add(R.id.container, listMoviesFragment).commit();
         }
 
-        @Override
-        public void failure(RetrofitError error) {
-            log(new GenericException(""), "");
-        }
-    };
+    }
 
     @Override
     protected void setContentView() {

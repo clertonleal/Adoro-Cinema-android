@@ -10,6 +10,10 @@ public class GenericException extends Exception {
         super(e);
     }
 
+    public GenericException(Throwable e){
+        super(e);
+    }
+
     public GenericException(String message){
         super(message);
     }

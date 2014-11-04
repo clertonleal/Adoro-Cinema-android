@@ -6,12 +6,15 @@ import android.util.Log;
 
 import butterknife.ButterKnife;
 import cinema.adoro.com.adorocinema.application.ApplicationContext;
+import rx.subscriptions.CompositeSubscription;
 
 /**
  * Created by clertonleal on 18/10/14.
  * Adoro-Cinema-android
  */
 public abstract class GenericActivity extends Activity {
+
+    protected CompositeSubscription compositeSubscription = new CompositeSubscription();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +28,17 @@ public abstract class GenericActivity extends Activity {
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         setOnClickListeners();
+    }
+
+    @Override
+    protected void onDestroy() {
+        unsubscribeSubscriptions();
+        super.onDestroy();
+    }
+
+    protected void unsubscribeSubscriptions(){
+        compositeSubscription.unsubscribe();
+        compositeSubscription = new CompositeSubscription();
     }
 
     protected void log(Exception e){

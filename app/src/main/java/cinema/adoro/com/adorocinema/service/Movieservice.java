@@ -9,6 +9,7 @@ import cinema.adoro.com.adorocinema.dao.MovieDao;
 import cinema.adoro.com.adorocinema.domain.Movie;
 import cinema.adoro.com.adorocinema.network.MovieNetwork;
 import retrofit.Callback;
+import rx.Observable;
 
 /**
  * Created by clertonleal on 18/10/14.
@@ -27,7 +28,7 @@ public class MovieService extends GenericService<Movie> {
         return movieDao;
     }
 
-    public void retrieveMovies(Callback<List<Movie>> movies){
-        movieNetwork.allMovies(movies);
+    public Observable<List<Movie>> retrieveMovies(){
+        return movieNetwork.allMovies();
     }
 }

@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.jensdriller.libs.multistatelistview.MultiStateListView;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,15 +26,16 @@ import cinema.adoro.com.adorocinema.util.BundleHelper;
  */
 public class ListMoviesFragment extends GenericFragment {
 
-    private List<Movie> movies = new ArrayList<Movie>();
+    private List<Movie> movies = new ArrayList<>();
     private MovieAdapter movieAdapter;
 
     @InjectView(R.id.list_movies)
-    ListView listMovies;
+    MultiStateListView listMovies;
 
     public void setListMovies(List<Movie> movies){
         this.movies.clear();
         this.movies.addAll(movies);
+        movieAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -52,5 +55,17 @@ public class ListMoviesFragment extends GenericFragment {
             intent.putExtra(BundleHelper.MOVIE, movies.get(position));
             startActivity(intent);
         });
+    }
+
+    public void showLoading(){
+        listMovies.showLoadingView();
+    }
+
+    public void showError(){
+        listMovies.showErrorView();
+    }
+
+    public void showEmpty(){
+        listMovies.showEmptyView();
     }
 }
