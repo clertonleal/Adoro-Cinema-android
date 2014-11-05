@@ -12,6 +12,13 @@ import java.util.Date;
 @DatabaseTable
 public class Cinema {
 
+    public Cinema(){}
+
+    public Cinema(String name, String key){
+        setName(name);
+        setKey(key);
+    }
+
     @DatabaseField(id = true)
     private Integer id;
 

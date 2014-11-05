@@ -11,6 +11,7 @@ import java.sql.SQLException;
 
 import javax.inject.Inject;
 
+import cinema.adoro.com.adorocinema.domain.Cinema;
 import cinema.adoro.com.adorocinema.domain.Movie;
 
 /**
@@ -31,6 +32,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     public void onCreate(SQLiteDatabase database, ConnectionSource connectionSource) {
         try {
             TableUtils.createTable(connectionSource, Movie.class);
+            TableUtils.createTable(connectionSource, Cinema.class);
         } catch (SQLException e) {
             throw new RuntimeException("Error to create database");
         }

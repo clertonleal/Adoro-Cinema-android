@@ -16,6 +16,7 @@ public class ListCinemas {
 
     public static void setCinemas(List<Cinema> cinemas, Context context){
         CINEMAS.clear();
+        CINEMAS.add(new Cinema(context.getResources().getString(R.string.app_name), "all"));
         CINEMAS.addAll(cinemas);
 
         CINEMA_NAMES.clear();

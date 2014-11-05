@@ -38,14 +38,18 @@ public class MoviesActivity extends GenericActivity implements NavigationDrawerF
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        progressDialog = ProgressDialog.show(this, getResources().getString(R.string.app_name), getResources().getString(R.string.setup_application), true, false);
-        compositeSubscription.add(AndroidObservable.bindActivity(this, cinemaService.retrieveCinemas()).subscribe(
-                cinemas -> initApplication(cinemas),
+        showInitialDialog();
+        compositeSubscription.add(AndroidObservable.bindActivity(this, cinemaService.retrieveAllCinemas()).subscribe(
+                cinemas -> saveCinemasAndCreateNavigation(cinemas),
                 e -> logError(e)
         ));
     }
 
-    private void initApplication(List<Cinema> cinemas) {
+    private void showInitialDialog() {
+        progressDialog = ProgressDialog.show(this, getResources().getString(R.string.app_name), getResources().getString(R.string.setup_application), true, false);
+    }
+
+    private void saveCinemasAndCreateNavigation(List<Cinema> cinemas) {
         try {
             ListCinemas.setCinemas(cinemas, this);
             cinemaService.createOrUpdate(cinemas);
@@ -53,20 +57,19 @@ public class MoviesActivity extends GenericActivity implements NavigationDrawerF
             log(e);
         }
 
-        navigationDrawerFragment = (NavigationDrawerFragment) getFragmentManager().findFragmentById(R.id.navigation_drawer);
-        navigationDrawerFragment.notifyDataSetChanged();
-        title = getTitle();
-        navigationDrawerFragment.setUp(R.id.navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout));
+        createNavigationDrawer();
         createListFragment();
-    }
-
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
         compositeSubscription.add(AndroidObservable.bindActivity(this, movieService.retrieveAllMovies()).subscribe(
                 movies -> showMovies(movies),
                 e -> logError(e)
         ));
+    }
+
+    private void createNavigationDrawer() {
+        navigationDrawerFragment = (NavigationDrawerFragment) getFragmentManager().findFragmentById(R.id.navigation_drawer);
+        navigationDrawerFragment.notifyDataSetChanged();
+        title = getTitle();
+        navigationDrawerFragment.setUp(R.id.navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout));
     }
 
     @Override

@@ -29,7 +29,7 @@ public class CinemaService extends GenericService<Cinema> {
         return cinemaDao;
     }
 
-    public Observable<List<Cinema>> retrieveCinemas(){
+    public Observable<List<Cinema>> retrieveAllCinemas(){
         return cinemaNetwork.retrieveCinemas().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
     }
 }
