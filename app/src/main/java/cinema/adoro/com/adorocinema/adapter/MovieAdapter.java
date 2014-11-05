@@ -6,10 +6,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.List;
 
 import cinema.adoro.com.adorocinema.R;
 import cinema.adoro.com.adorocinema.domain.Movie;
+import cinema.adoro.com.adorocinema.util.ServerUrl;
 
 /**
  * Created by clertonleal on 13/09/14.
@@ -17,8 +20,11 @@ import cinema.adoro.com.adorocinema.domain.Movie;
  */
 public class MovieAdapter extends GenericBaseAdapter<Movie> {
 
+    private Context context;
+
     public MovieAdapter(Context context, List<Movie> list) {
         super(context, list);
+        this.context = context;
     }
 
     @Override
@@ -33,6 +39,7 @@ public class MovieAdapter extends GenericBaseAdapter<Movie> {
 
         title.setText(getItem(position).getTitle());
         description.setText(getItem(position).getSynopsis());
+        Picasso.with(context).load(ServerUrl.SERVER_URL + getItem(position).getCoverUrl()).placeholder(R.drawable.movie_placeholder).into(cover);
         return convertView;
     }
 }

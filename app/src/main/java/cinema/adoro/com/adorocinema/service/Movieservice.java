@@ -10,6 +10,8 @@ import cinema.adoro.com.adorocinema.domain.Movie;
 import cinema.adoro.com.adorocinema.network.MovieNetwork;
 import retrofit.Callback;
 import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by clertonleal on 18/10/14.
@@ -28,7 +30,7 @@ public class MovieService extends GenericService<Movie> {
         return movieDao;
     }
 
-    public Observable<List<Movie>> retrieveMovies(){
-        return movieNetwork.allMovies();
+    public Observable<List<Movie>> retrieveAllMovies(){
+        return movieNetwork.allMovies().observeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
     }
 }

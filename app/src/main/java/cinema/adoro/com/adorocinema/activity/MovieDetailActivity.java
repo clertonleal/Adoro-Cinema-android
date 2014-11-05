@@ -6,10 +6,13 @@ import android.text.SpannableString;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import butterknife.InjectView;
 import cinema.adoro.com.adorocinema.R;
 import cinema.adoro.com.adorocinema.domain.Movie;
 import cinema.adoro.com.adorocinema.util.BundleHelper;
+import cinema.adoro.com.adorocinema.util.ServerUrl;
 import cinema.adoro.com.adorocinema.util.TextMerging;
 
 /**
@@ -47,6 +50,7 @@ public class MovieDetailActivity extends GenericActivity {
 
     private void fillScreen() {
         title.setText(movie.getTitle());
+        Picasso.with(this).load(ServerUrl.SERVER_URL + movie.getCoverUrl()).placeholder(R.drawable.movie_placeholder).into(cover);
         setSynopsis(synopsis);
     }
 

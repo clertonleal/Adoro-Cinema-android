@@ -51,4 +51,6 @@ dependencies {
     compile 'com.squareup.retrofit:retrofit:1.7.0'
     compile 'io.reactivex:rxandroid:0.22.0'
     compile 'com.github.jenzz.multistatelistview:library:1.0'
+    compile 'com.squareup.picasso:picasso:2.3.4'
+    compile 'com.android.support:support-v4:19.0.1'
 }
