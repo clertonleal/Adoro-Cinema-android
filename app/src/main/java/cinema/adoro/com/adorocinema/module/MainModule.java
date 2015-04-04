@@ -4,6 +4,8 @@ package cinema.adoro.com.adorocinema.module;
 import android.content.Context;
 import android.location.LocationManager;
 
+import com.google.gson.GsonBuilder;
+
 import javax.inject.Singleton;
 
 import cinema.adoro.com.adorocinema.activity.MovieDetailActivity;
@@ -17,6 +19,7 @@ import cinema.adoro.com.adorocinema.util.ServerUrl;
 import dagger.Module;
 import dagger.Provides;
 import retrofit.RestAdapter;
+import retrofit.converter.GsonConverter;
 
 /**
  * Created by clertonleal on 16/10/14.
@@ -60,7 +63,9 @@ public class MainModule {
     @Provides
     @Singleton
     RestAdapter provideRestAdapter(){
-        return new RestAdapter.Builder().setEndpoint(ServerUrl.SERVER_URL).build();
+        return new RestAdapter.Builder().setEndpoint(ServerUrl.SERVER_URL).
+                setConverter(new GsonConverter(new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create()))
+                .build();
     }
 
     @Provides

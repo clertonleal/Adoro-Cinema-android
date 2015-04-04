@@ -23,12 +23,6 @@ public class Movie implements Serializable{
     private String synopsis;
 
     @DatabaseField
-    private Integer minimumAge;
-
-    @DatabaseField
-    private Date launchDate;
-
-    @DatabaseField
     private String coverUrl;
 
     @DatabaseField
@@ -55,22 +49,6 @@ public class Movie implements Serializable{
 
     public void setSynopsis(String synopsis) {
         this.synopsis = synopsis;
-    }
-
-    public Integer getMinimumAge() {
-        return minimumAge;
-    }
-
-    public void setMinimumAge(Integer minimumAge) {
-        this.minimumAge = minimumAge;
-    }
-
-    public Date getLaunchDate() {
-        return launchDate;
-    }
-
-    public void setLaunchDate(Date launchDate) {
-        this.launchDate = launchDate;
     }
 
     public String getCoverUrl() {

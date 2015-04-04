@@ -5,5 +5,5 @@ package cinema.adoro.com.adorocinema.util;
  * Adoro-Cinema-android
  */
 public class ServerUrl {
-    public static final String SERVER_URL = "http://192.168.25.10:3000";
+    public static final String SERVER_URL = "http://192.168.25.69:3000";
 }

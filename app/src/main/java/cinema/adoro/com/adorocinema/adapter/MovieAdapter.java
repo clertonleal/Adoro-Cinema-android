@@ -39,7 +39,7 @@ public class MovieAdapter extends GenericBaseAdapter<Movie> {
 
         title.setText(getItem(position).getTitle());
         description.setText(getItem(position).getSynopsis());
-        Picasso.with(context).load(ServerUrl.SERVER_URL + getItem(position).getCoverUrl()).placeholder(R.drawable.movie_placeholder).into(cover);
+        Picasso.with(context).load(getItem(position).getCoverUrl()).placeholder(R.drawable.movie_placeholder).into(cover);
         return convertView;
     }
 }

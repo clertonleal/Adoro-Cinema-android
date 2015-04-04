@@ -5,10 +5,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
-import com.jensdriller.libs.multistatelistview.MultiStateListView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,12 +29,22 @@ public class ListMoviesFragment extends GenericFragment {
     private MovieAdapter movieAdapter;
 
     @InjectView(R.id.list_movies)
-    MultiStateListView listMovies;
+    ListView listMovies;
+
+    @InjectView(R.id.layout_error)
+    LinearLayout layoutError;
+
+    @InjectView(R.id.layout_loading)
+    LinearLayout layoutLoading;
+
+    @InjectView(R.id.layout_empty)
+    LinearLayout layoutEmpty;
 
     public void setListMovies(List<Movie> movies){
         this.movies.clear();
         this.movies.addAll(movies);
         movieAdapter.notifyDataSetChanged();
+        showList();
     }
 
     @Override
@@ -58,14 +67,30 @@ public class ListMoviesFragment extends GenericFragment {
     }
 
     public void showLoading(){
-        listMovies.showLoadingView();
+        listMovies.setVisibility(View.GONE);
+        layoutError.setVisibility(View.GONE);
+        layoutEmpty.setVisibility(View.GONE);
+        layoutLoading.setVisibility(View.VISIBLE);
     }
 
     public void showError(){
-        listMovies.showErrorView();
+        listMovies.setVisibility(View.GONE);
+        layoutError.setVisibility(View.VISIBLE);
+        layoutEmpty.setVisibility(View.GONE);
+        layoutLoading.setVisibility(View.GONE);
     }
 
     public void showEmpty(){
-        listMovies.showEmptyView();
+        listMovies.setVisibility(View.GONE);
+        layoutError.setVisibility(View.GONE);
+        layoutEmpty.setVisibility(View.VISIBLE);
+        layoutLoading.setVisibility(View.GONE);
+    }
+
+    private void showList(){
+        listMovies.setVisibility(View.VISIBLE);
+        layoutError.setVisibility(View.GONE);
+        layoutEmpty.setVisibility(View.GONE);
+        layoutLoading.setVisibility(View.GONE);
     }
 }

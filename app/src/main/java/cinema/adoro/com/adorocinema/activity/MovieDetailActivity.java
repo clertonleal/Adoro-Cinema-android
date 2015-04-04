@@ -50,7 +50,7 @@ public class MovieDetailActivity extends GenericActivity {
 
     private void fillScreen() {
         title.setText(movie.getTitle());
-        Picasso.with(this).load(ServerUrl.SERVER_URL + movie.getCoverUrl()).placeholder(R.drawable.movie_placeholder).into(cover);
+        Picasso.with(this).load(movie.getCoverUrl()).placeholder(R.drawable.movie_placeholder).into(cover);
         setSynopsis(synopsis);
     }
 

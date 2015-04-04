@@ -4,6 +4,7 @@ import java.util.List;
 
 import cinema.adoro.com.adorocinema.domain.Movie;
 import retrofit.http.GET;
+import retrofit.http.Path;
 import rx.Observable;
 
 /**
@@ -13,5 +14,9 @@ import rx.Observable;
 public interface MovieNetwork {
 
     @GET("/movies.json")
-    Observable<List<Movie>> allMovies();
+    Observable<List<Movie>> retrieveAllMovies();
+
+    @GET("/movies/byCinema/{id}")
+    Observable<List<Movie>> retrieveMoviesByCinemaId(@Path("id") Integer id);
+
 }

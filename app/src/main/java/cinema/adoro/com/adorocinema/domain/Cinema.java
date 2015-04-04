@@ -14,9 +14,9 @@ public class Cinema {
 
     public Cinema(){}
 
-    public Cinema(String name, String key){
+    public Cinema(String name, Integer id){
         setName(name);
-        setKey(key);
+        setId(id);
     }
 
     @DatabaseField(id = true)
@@ -24,9 +24,6 @@ public class Cinema {
 
     @DatabaseField
     private String name;
-
-    @DatabaseField
-    private String key;
 
 //    @DatabaseField
 //    private Date openTime;
@@ -50,14 +47,6 @@ public class Cinema {
 //    public void setOpenTime(Date openTime) {
 //        this.openTime = openTime;
 //    }
-
-    public String getKey() {
-        return key;
-    }
-
-    public void setKey(String key) {
-        this.key = key;
-    }
 
     public String getName() {
         return name;

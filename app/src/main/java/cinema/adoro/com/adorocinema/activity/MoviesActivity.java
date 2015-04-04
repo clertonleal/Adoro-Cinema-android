@@ -1,6 +1,7 @@
 package cinema.adoro.com.adorocinema.activity;
 
 import android.app.ActionBar;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
@@ -38,15 +39,31 @@ public class MoviesActivity extends GenericActivity implements NavigationDrawerF
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        showInitialDialog();
+        showInitialProgressDialog();
+    }
+
+    private void showInitialProgressDialog() {
+        if(progressDialog != null && progressDialog.isShowing()){
+            progressDialog.dismiss();
+        }
+
+        progressDialog = ProgressDialog.show(this, getResources().getString(R.string.app_name), getResources().getString(R.string.setup_application), true, false);
+
         compositeSubscription.add(AndroidObservable.bindActivity(this, cinemaService.retrieveAllCinemas()).subscribe(
                 cinemas -> saveCinemasAndCreateNavigation(cinemas),
-                e -> logError(e)
+                e -> showTryAgainDialog()
         ));
     }
 
-    private void showInitialDialog() {
-        progressDialog = ProgressDialog.show(this, getResources().getString(R.string.app_name), getResources().getString(R.string.setup_application), true, false);
+    private void showTryAgainDialog() {
+        new AlertDialog.Builder(this).
+                setCancelable(false).
+                setMessage(getResources().getString(R.string.no_internet_connection)).
+                setTitle(getResources().getString(R.string.app_name)).
+                setNegativeButton(getResources().getString(R.string.finish), (dialog, which) -> finish()).
+                setPositiveButton(getResources().getString(R.string.try_again), (dialog, which) -> showInitialProgressDialog()).
+                create().
+                show();
     }
 
     private void saveCinemasAndCreateNavigation(List<Cinema> cinemas) {
@@ -61,24 +78,25 @@ public class MoviesActivity extends GenericActivity implements NavigationDrawerF
         createListFragment();
         compositeSubscription.add(AndroidObservable.bindActivity(this, movieService.retrieveAllMovies()).subscribe(
                 movies -> showMovies(movies),
-                e -> logError(e)
+                e -> listMoviesFragment.showError()
         ));
     }
 
     private void createNavigationDrawer() {
         navigationDrawerFragment = (NavigationDrawerFragment) getFragmentManager().findFragmentById(R.id.navigation_drawer);
-        navigationDrawerFragment.notifyDataSetChanged();
         title = getTitle();
         navigationDrawerFragment.setUp(R.id.navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout));
+        navigationDrawerFragment.notifyDataSetChanged();
     }
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {
-        title = ListCinemas.CINEMAS.get(position).getName();
+        final Cinema cinema = ListCinemas.CINEMAS.get(position);
+        title = cinema.getName();
         listMoviesFragment.showLoading();
-        compositeSubscription.add(movieService.retrieveAllMovies().subscribe(
+        compositeSubscription.add(AndroidObservable.bindActivity(this, movieService.retrieveMoviesByKey(cinema.getId())).subscribe(
                 movies -> showMovies(movies),
-                e -> logError(e)
+                e -> listMoviesFragment.showError()
         ));
     }
 
@@ -101,11 +119,6 @@ public class MoviesActivity extends GenericActivity implements NavigationDrawerF
 
     private void createListFragment() {
         getFragmentManager().beginTransaction().add(R.id.container, listMoviesFragment).commit();
-    }
-
-    private void logError(Throwable e) {
-        listMoviesFragment.showError();
-        log(new GenericException(e), "");
     }
 
     private void showMovies(List<Movie> movies) {
