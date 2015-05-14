@@ -34,7 +34,7 @@ public class ApplicationContext extends Application {
             movieDao.deleteAll();
             movieDao.createOrUpdate(FactorMovies.getMovies());
         } catch (GenericException e) {
-            Log.e("Application","Fudeu", e);
+            Log.e("Application","Initial insert", e);
         }
     }
 
